@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Pv dimmer - Configuration minuteur </title>
+        <title>%NAME% Configuration minuteur </title>
         <!-- Custom fonts for this template-->
         <link href="all.min.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -31,7 +31,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Pv Dimmer</div>
+                    <div class="sidebar-brand-text mx-3">%NAME%</div>
                 </a>
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
@@ -39,9 +39,8 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                        <br>
-                        <span id="version"></span>
+                        <span>Tableau de bord</span><br>
+
                     </a>
                 </li>
                 <!-- Divider -->
@@ -109,15 +108,15 @@
                         <div class="col-lg-6">
                             <div id="tabs">
                                 <ul class="nav nav-tabs">
-                                  <li class="nav-item"><a class="nav-link" href="#dimmer">Configuration dimmer</a></li>
-                                  <li class="nav-item"><a class="nav-link" href="#relay1">Configuration relais 1</a></li>
-                                  <li class="nav-item"><a class="nav-link" href="#relay2">Configuration relais 2</a></li>
+                                  <li class="nav-item"><a class="nav-link" href="#dimmer">Paramètres gradateur</a></li>
+                                  <li class="nav-item"><a class="nav-link" href="#relay1">Paramètres relais 1</a></li>
+                                  <li class="nav-item"><a class="nav-link" href="#relay2">Paramètres relais 2</a></li>
                                 </ul>
 
                                 <div id="dimmer">
                                     <form class="user" id="dimmer-form" method="post" action="">
                                       <div class="form-group">
-                                        Heure de démarrage: (format hh:mm)
+                                        Heure de démarrage:(format hh:mm)
                                         <input type="text" class="form-control form-control-user" id="heure_demarrage_dimmer" placeholder="%heure_demarrage%">
                                       </div>
                                       <div class="form-group">
@@ -128,7 +127,7 @@
                                         Température de consigne (°C):
                                         <input type="number" step="1" class="form-control form-control-user" id="temperature_dimmer" placeholder="%temperature%">
                                       </div>
-                                      <input type="submit" value="Application des paramètres dimmer" class="btn btn-primary btn-user btn-block">
+                                      <input type="submit" value="Application des paramètres gradateur" class="btn btn-primary btn-user btn-block">
                                     </form>
                                   </div>
 
