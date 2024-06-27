@@ -132,14 +132,17 @@ extern "C" {
   #include "SPIFFS.h"
   #define LittleFS SPIFFS // Fonctionne, mais est-ce correct? 
   #include <esp_system.h>
+  #include <ESPmDNS.h>
 
 #else
 // Web services
   #include <ESP8266WiFi.h>
+  #include <ESP8266mDNS.h>
   //#include <ESPAsyncTCP.h>
   #include <ESP8266HTTPClient.h> 
 // File System
   #include <LittleFS.h> // NOSONAR
+
 #endif
 
 #ifdef ESP32ETH
@@ -147,7 +150,7 @@ extern "C" {
 #endif
 
 // taches
-Task Task_dallas(15000, TASK_FOREVER, &mqttdallas);
+Task Task_dallas(12000, TASK_FOREVER, &mqttdallas);
 Task Task_Cooler(15000, TASK_FOREVER, &cooler);
 Task Task_GET_POWER(10000, TASK_FOREVER, &get_dimmer_child_power);
 #ifdef RELAY1
@@ -418,16 +421,16 @@ void setup() {
  
   /// chargement des conf de minuteries
   Serial.println(F("Loading minuterie \r\n"));
-  programme.name="dimmer";
+  programme.set_name("/dimmer");
   programme.loadProgramme();
   programme.saveProgramme();
 
 #ifdef RELAY1
-  programme_relay1.name="relay1";
+  programme_relay1.set_name("/relay1");
   programme_relay1.loadProgramme();
   programme_relay1.saveProgramme();
 
-  programme_relay2.name="relay2";
+  programme_relay2.set_name("/relay2");
   programme_relay2.loadProgramme();
   programme_relay2.saveProgramme();
 #endif
@@ -523,7 +526,23 @@ void setup() {
       AP = true; 
   }
 
-  
+    // Initialize mDNS
+    //config.say_my_name)
+  if (!MDNS.begin(config.say_my_name)) {   
+    Serial.println("Error setting up MDNS responder!");
+    while(1) {
+      delay(1000);
+    }
+  }
+  Serial.println("mDNS responder started");
+  //MDNS.addService("http", "tcp", 80);
+  MDNS.addService("http", "tcp", 1308);
+
+  logging.Set_log_init("mDNS responder started \r\n");
+  logging.Set_log_init(String(config.say_my_name) + ".local \r\n");
+
+
+
     //***********************************
     //************* Setup - OTA 
     //***********************************
@@ -649,6 +668,11 @@ bool alerte=false;
 /////////////////////
 void loop() {
   client.loop();
+
+  #if !defined(ESP32) && !defined(ESP32ETH)
+  /// update mdns
+  MDNS.update();
+  #endif
 
   /// connexion MQTT dans les cas de conf mqtt et perte de connexion
   if (!mqttConnected && !AP && mqtt_config.mqtt) {
