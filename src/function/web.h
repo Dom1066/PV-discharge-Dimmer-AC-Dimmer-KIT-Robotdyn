@@ -573,7 +573,7 @@ String processor(const String& var){
     return (VERSION_http);
   } 
   if (var == "NAME"){
-    String name = String(config.say_my_name) + ".local";
+    String name = String(config.say_my_name);
     return (name);
   } 
   if (var == "RSSI"){
