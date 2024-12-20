@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pv Dimmer %NAME% - Dashboard</title>
+    <title>Pv %NAME% - Tableau de bord</title>
     <link href="css/all.min.css?%FS_RELEASE%" rel="stylesheet" type="text/css" />
   </head>
   <body id="page-top">
@@ -22,21 +22,24 @@
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
           </div>
-          <div class="sidebar-brand-text mx-3">Pv Dimmer %NAME%</div>
+          <div class="sidebar-brand-text mx-3">%NAME%</div>
         </a>
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="./">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-            <br />
-            <span id="version">%VERSION%</span><br />
-            <span id="RSSI">RSSI : %RSSI% dBm</span><br />
-            <span id="dimmer_name">%NAME%</span>
-          </a>
-        </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Tableau de bord</span>
+                        <br>
+                        <i class="fas fa-fw fa-code-branch"></i>
+                        <span id="version"> %VERSION%</span>
+                        <br>
+                        <br>
+                        <i class="fa fa-wifi"></i>
+                        <span id="RSSI">Signal WiFi : %RSSI% dBm</span>
+                    </a>
+                </li>
         <!-- Divider -->
         <hr class="sidebar-divider" />
         <!-- Heading -->
@@ -68,11 +71,13 @@
             </div>
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item dropdown no-arrow">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                  <div id="time">%TIME%</div>
-                </span>
-              </li>
+                            <li class="nav-item dropdown no-arrow">
+
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        <div id="time">%TIME%</div>
+                                    </span>
+
+                            </li>
             </ul>
             <div class="topbar-divider d-none d-sm-block"></div>
           </nav>
@@ -81,7 +86,7 @@
           <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-              <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+              <h1 class="h3 mb-0 text-gray-800">Tableau de bord</h1>
             </div>
             <!-- Content Row -->
             <div class="row">
@@ -92,7 +97,7 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Dimmer</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Puissance gradateur</h6>
                   </div>
                   <div class="card-body">
                     <div id="curve_chart2" style="width: auto; height: 200px"></div>
@@ -119,18 +124,30 @@
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
                     <h6 class="m-0 font-weight-bold text-primary">Etats</h6>
-                  </div>
-                  <div class="card-body">
-                    <b>Etat Ballon : </b>
-                    <h4 id="alerte">N/A</h4>
-                    <b>Etat Minuteur : </b>
-                    <h4 id="minuteur">N/A</h4>
-                    <b>Etat Relais 1 : </b>
-                    <h4 id="relais 1" style="cursor: pointer">N/A</h4>
-                    <b>Etat Relais 2 : </b>
-                    <h4 id="relais 2" style="cursor: pointer">N/A</h4>
-                  </div>
-                </div>
+                            </div>
+                            <div class="card-body d-flex flex-raw align-items-strech justify-content-start">
+                            <div id="états" style=" width: auto; height: 200px;"></div> 
+                            <text-start>
+                            <p class=" h5 lh-base text-primary text-nowrap">
+                            <b>Statut : <span id="alerte">%alerte%</span></b>
+                            </p>
+                            <br>
+                            <p class=" h5 lh-base text-primary text-nowrap">
+                            <b>Minuteur <span id="minuteur">%minuteur%></span></b>
+                            </p>
+                            <br>
+                            <p class="h5 lh-base text-primary text-nowrap">
+                            <b>Relais 1 : <span id="relais 1">%relais 1%</span></b>
+                            </p>
+                            <br>
+                            <p class="h5 lh-base text-primary text-nowrap">
+                            <b>Relais 2 : <span id="relais 2">%relais 2%</span></b>
+                            </p>
+                            
+                            </text-start>
+
+                            </div>
+                            </div>
               </div>
               <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card shadow mb-4">
@@ -138,7 +155,7 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Dallas</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Sonde</h6>
                   </div>
                   <div class="card-body">
                     <span id="dallas"></span>
@@ -180,25 +197,25 @@
       function drawChart() {
         var optionsGauge = {
           redFrom: 75,
-          redTo: 100,
+          redTo: 100, redColor: '#FF0000',
           yellowFrom: 50,
           yellowTo: 75,
           greenFrom: 0,
-          greenTo: 50,
+          greenTo: 50, greenColor: '#01DF3A',
           minorTicks: 4,
           min: 0,
           max: 100,
         };
         var optionsGaugetemp = {
-          redFrom: 80,
-          redTo: 100,
-          yellowFrom: 70,
-          yellowTo: 80,
-          greenFrom: 0,
-          greenTo: 70,
-          minorTicks: 5,
-          min: 0,
-          max: 100,
+          redFrom: 60, 
+          redTo: 70, redColor: '#FF0000',
+          yellowFrom: 20, 
+          yellowTo: 30, yellowColor: '#2DA4FF',
+          greenFrom: 30, 
+          greenTo: 60, greenColor: '#01DF3A',
+          minorTicks: 5, majorTicks: ['20','30','40','50','60','70'],
+          min: 20, 
+          max: 70, 
         };
         // mise à jour de la jauge  -->
         var gaugePA = new google.visualization.Gauge(document.getElementById("curve_chart2"));
@@ -227,11 +244,13 @@
             dataGaugePA.setValue(0, 0, "Power (W)");
             dataGaugePA.setValue(0, 1, power);
             var pmaxtemp = parseInt((power * 100) / dimmer);
-            let pmax = isNaN(pmaxtemp) ? 1000 : pmaxtemp;
+            let pmax = isNaN(pmaxtemp) ? 1600 : pmaxtemp;
             optionsGauge.max = pmax;
             optionsGauge.redTo = pmax;
-            optionsGauge.redFrom = parseInt(pmax / 2);
-            optionsGauge.yellowTo = parseInt(pmax / 2);
+        optionsGauge.redFrom = parseInt(pmax/1.07);
+        optionsGauge.yellowTo = parseInt(pmax/1.07);
+		optionsGauge.yellowFrom = parseInt(pmax/1.77);
+		optionsGauge.greenTo = parseInt(pmax/1.77);
             gaugePA.draw(dataGaugePA, optionsGauge);
             dataGaugePAtemp.setValue(0, 0, "Temp °C");
             dataGaugePAtemp.setValue(0, 1, temperature);
@@ -240,34 +259,34 @@
             // ecriture de "refroidissement" dans le div alerte si l'état est à 1
             if (alerte == 1) {
               document.getElementById("alerte").innerHTML = "Refroidissement";
-              document.getElementById("alerte").style.color = "red";
+              document.getElementById("alerte").style.color = "#FF0000";
             } else {
               document.getElementById("alerte").innerHTML = "Normal";
-              document.getElementById("alerte").style.color = "";
+              document.getElementById("alerte").style.color = "#01DF3A";
             }
             // ecriture de "minuteur" dans le div minuteur si l'état est à 1
             if (minuteur == 1) {
-              document.getElementById("minuteur").innerHTML = "Minuteur";
-              document.getElementById("minuteur").style.color = "red";
+              document.getElementById("minuteur").innerHTML = "en marche";
+              document.getElementById("minuteur").style.color = "#01DF3A";
             } else {
-              document.getElementById("minuteur").innerHTML = "Non actif";
-              document.getElementById("minuteur").style.color = "";
+              document.getElementById("minuteur").innerHTML = "à l'arrêt.";
+              document.getElementById("minuteur").style.color = "grey";
             }
             // ecriture de "ON" dans le div relais 1 si l'état est à 1
             if (relais1 == 1) {
               document.getElementById("relais 1").innerHTML = "ON";
-              document.getElementById("relais 1").style.color = "red";
+              document.getElementById("relais 1").style.color = "#01DF3A";
             } else {
               document.getElementById("relais 1").innerHTML = "OFF";
-              document.getElementById("relais 1").style.color = "";
+              document.getElementById("relais 1").style.color = "grey";
             }
             // ecriture de "ON" dans le div relais 2 si l'état est à 1
             if (relais2 == 1) {
               document.getElementById("relais 2").innerHTML = "ON";
-              document.getElementById("relais 2").style.color = "red";
+              document.getElementById("relais 2").style.color = "#01DF3A";
             } else {
               document.getElementById("relais 2").innerHTML = "OFF";
-              document.getElementById("relais 2").style.color = "";
+              document.getElementById("relais 2").style.color = "grey";
             }
             if (data.alerte && data.alerte.trim() != "") {
               const alertContainer = document.getElementById("alertContainer");
