@@ -332,64 +332,66 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                      <div class="card position-relative">
-                        <div class="card-header py-3">
-                          <h6 class="m-0 font-weight-bold text-primary">gradateur secondaire</h6>
-                          <span id="saveform"></span>
-                        </div>
-                                                    <div class="card-body">
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6">IP Gradateur secondaire</div>
-                                                            <div class="col-sm-6">Mode Gradateur secondaire</div>
-                                                            <div class="col-sm-4" id="dimmer-url">
-                                                                <!-- L'url sera ajoutée ici -->
+            <div class="card position-relative">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Gradateur distant</h6>
+                  <span id="saveform"></span>
+              </div>
+              <div class="card-body">
+			  
+
+                <div class="form-group row">
+                      <div class="col-sm-4">
+                              &emsp;IP Gradateur:<input type="text" class="form-control form-control-user" id="child" placeholder="%CHILD%">
+                      </div>
+                  <div class="row align-items-center col-lg-8">
+                    <div class="col mr-2">
+                    <div class="h12">&emsp;&emsp;&emsp; </div>					
+                    <button class="btn btn-outline-primary col-lg-8" id="dimmer-url" >Gradateur </button>
+                      <!-- L'url sera ajoutée ici -->
+					  
+                  </div>
+				</div>  
+				
+                                                    <div class="card-body">                                                        <div class="form-group row">
+                                                            <div class="col-sm-4">Mode Gradateur</div>														
+
+                                                            <div class="col-sm-4">
+                                                                <select id="delester" class="form-control form-control-user">
+                                                                    <option value="off">off</option>
+                                                                    <option value="delester">délester</option>
+                                                                    <option value="equal">égal</option>
+                                                                </select>
                                                             </div>
                                                         </div>
-                          <div class="form-group row">
-                            <div class="col-sm-6">
-                              <input
-                                type="text"
-                                class="form-control form-control-user"
-                                id="child"
-                                placeholder="%CHILD%"
-                              />
-                            </div>
-                            <div class="col-sm-4">
-                              <select id="delester" class="form-control form-control-user">
-                                <option value="off">off</option>
-                                <option value="delester">délester</option>
-                                <option value="equal">égal</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <div class="card position-relative">
-                        <div class="card-header py-3">
-                          <h6 class="m-0 font-weight-bold text-primary">Hostname</h6>
-                          <span id="saveform"></span>
-                        </div>
-                        <div class="card-body">
-                          <div class="form-group row">
-                            <div class="col-sm-6">Nom du gradateur</div>
-                            <div class="col-sm-4" id="dimmer-mDNS">
-                              <!-- Le nom mDNS sera rajouté ici-->
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col-sm-6">
-                              <input
-                                type="text"
-                                class="form-control form-control-user"
-                                id="dimmername"
-                                placeholder="%DIMMERNAME%"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
+													</div>	
+                </div> 
+              </div>
+            </div>
+
+ 
+                                                <div class="card position-relative">
+                                                    <div class="card-header py-3">
+                                                    <h6 class="m-0 font-weight-bold text-primary">Hostname</h6>
+                                                        <span id="saveform"></span>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">Nom du gradateur</div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control form-control-user"
+                                                                    id="dimmername"
+                                                                    placeholder="%DIMMERNAME%"
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
                       <div class="card position-relative" id="menu_mqtt">
                         <div class="card-header py-3">
                           <h6 class="m-0 font-weight-bold text-primary">Pilote MQTT</h6>
