@@ -241,7 +241,7 @@
             var relais1 = data.relay1;
             var relais2 = data.relay2;
             // Mettre à jour les éléments HTML
-            dataGaugePA.setValue(0, 0, "Power (W)");
+            dataGaugePA.setValue(0, 0, "Watts");
             dataGaugePA.setValue(0, 1, power);
             var pmaxtemp = parseInt((power * 100) / dimmer);
             let pmax = isNaN(pmaxtemp) ? 1600 : pmaxtemp;
@@ -252,7 +252,7 @@
 		optionsGauge.yellowFrom = parseInt(pmax/1.77);
 		optionsGauge.greenTo = parseInt(pmax/1.77);
             gaugePA.draw(dataGaugePA, optionsGauge);
-            dataGaugePAtemp.setValue(0, 0, "Temp °C");
+            dataGaugePAtemp.setValue(0, 0, "°C");
             dataGaugePAtemp.setValue(0, 1, temperature);
             gaugePAtemp.draw(dataGaugePAtemp, optionsGaugetemp);
             // recupération de l'état de sécurité
