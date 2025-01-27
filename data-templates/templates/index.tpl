@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pv Dimmer %NAME% - <%block name="page_title">Dashboard</%block></title>
+    <title>%NAME% - <%block name="page_title">Tableau de bord</%block></title>
 
     <link href="css/all.min.css?%FS_RELEASE%" rel="stylesheet" type="text/css" />
   </head>
@@ -23,21 +23,24 @@
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
           </div>
-          <div class="sidebar-brand-text mx-3">Pv Dimmer %NAME%</div>
+          <div class="sidebar-brand-text mx-3">%NAME%</div>
         </a>
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="./">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-            <br />
-            <span id="version">%VERSION%</span><br />
-            <span id="RSSI">RSSI : %RSSI% dBm</span><br />
-            <span id="dimmer_name">%NAME%</span>
-          </a>
-        </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Tableau de bord</span>
+                        <br>
+                        <i class="fas fa-fw fa-code-branch"></i>
+                        <span id="version"> %VERSION%</span>
+                        <br>
+                        <br>
+                        <i class="fa fa-wifi"></i>
+                        <span id="RSSI">Signal WiFi : %RSSI% dBm</span>
+                    </a>
+                </li>
         <!-- Divider -->
         <hr class="sidebar-divider" />
         <!-- Heading -->
@@ -75,11 +78,13 @@
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item dropdown no-arrow">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                  <div id="time">%TIME%</div>
-                </span>
-              </li>
+                            <li class="nav-item dropdown no-arrow">
+
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600">
+                                        <button class="btn btn-primary active col-lg-12" id="time" >%time%</button></b>
+                                    </span>
+
+                            </li>
             </ul>
             <div class="topbar-divider d-none d-sm-block"></div>
             </%block>
@@ -91,7 +96,7 @@
             <%block name="content">
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-              <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+              <h1 class="h3 mb-0 text-gray-800">Tableau de bord</h1>
             </div>
             <!-- Content Row -->
             <div class="row">
@@ -102,7 +107,7 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Dimmer</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Puissance gradateur</h6>
                   </div>
                   <div class="card-body">
                     <div id="curve_chart2" style="width: auto; height: 200px"></div>
@@ -131,19 +136,29 @@
                     <h6 class="m-0 font-weight-bold text-primary">Etats</h6>
                   </div>
                   <div class="card-body">
-                    <b>Etat Ballon : </b>
-                    <h4 id="alerte">N/A</h4>
-                    <b>Etat Minuteur : </b>
-                    <h4 id="minuteur">N/A</h4>
-                    <b>Etat Relais 1 : </b>
-                    <h4 id="relais 1" style="cursor: pointer">N/A</h4>
-                    <b>Etat Relais 2 : </b>
-                    <h4 id="relais 2" style="cursor: pointer">N/A</h4>
-                    <b>Etat Boost : </b>
+                            <p class=" h6 lh-base text-primary text-nowrap">
+                            <b>Statut : <span id="alerte">%alerte%</span></b>
+                            </p>
+							
+                            <p class="h6 lh-base text-primary text-nowrap">							
+                            <b>Minuteur d'appoint <span id="minuteur">%minuteur%</span></b>
+                            <br><br>
+                           <b>Marche forcée  <span id="boost" <button class="btn btn-success" id="boost" >N/A </button></b>
+						   <span class=h6 id="boost_endtime"></span>                            
+                            </p>
+							
+                            <p class="h6 lh-base text-primary text-nowrap">
+                            <b>Relais 1  &emsp;&emsp;&emsp; <span id="relais 1" <button class="btn btn-success" id="relais 1" >N/A </button></b>
+                            </p>
+
+                           <p class="h6 lh-base text-primary text-nowrap">
+						   <b>Relais 2  &emsp;&emsp;&emsp; <span id="relais 2" <button class="btn btn-success" id="relais 2" >N/A </button></b>
+
+                            </p>
                     <div>
-                      <span class=h4 id="boost" style="cursor: pointer">N/A</span>
-                      <span class=h6 id="boost_endtime"></span>
-                    </div>  
+
+
+                    </div>                    
                   </div>
                 </div>
               </div>
@@ -188,10 +203,8 @@
       window.onload = function () {
         horloge("time");
       };
-
       google.charts.load("current", { packages: ["corechart", "gauge"] });
       google.charts.setOnLoadCallback(drawChart);
-
       var chart;
       var options = {
         title: "Oscilloscope Mode",
@@ -200,56 +213,42 @@
       };
       var data;
       var inc;
-
       function drawChart() {
         var optionsGauge = {
           redFrom: 75,
-          redTo: 100,
-
+          redTo: 100, redColor: '#FF0000',
           yellowFrom: 50,
           yellowTo: 75,
-
           greenFrom: 0,
-          greenTo: 50,
-
+          greenTo: 50, greenColor: '#01DF3A',
           minorTicks: 4,
-
           min: 0,
           max: 100,
         };
-
         var optionsGaugetemp = {
-          redFrom: 80,
-          redTo: 100,
-
-          yellowFrom: 70,
-          yellowTo: 80,
-
-          greenFrom: 0,
-          greenTo: 70,
-
-          minorTicks: 5,
-
-          min: 0,
-          max: 100,
+          redFrom: 60, 
+          redTo: 70, redColor: '#FF0000',
+          yellowFrom: 20, 
+          yellowTo: 30, yellowColor: '#2DA4FF',
+          greenFrom: 30, 
+          greenTo: 60, greenColor: '#01DF3A',
+          minorTicks: 5, majorTicks: ['20','30','40','50','60','70'],
+          min: 20, 
+          max: 70, 
         };
-
         // mise à jour de la jauge  -->
         var gaugePA = new google.visualization.Gauge(document.getElementById("curve_chart2"));
         var dataGaugePA = new google.visualization.DataTable();
         dataGaugePA.addColumn("string", "Puissance");
         dataGaugePA.addColumn("number", "Value");
         dataGaugePA.addRows(1);
-
         // mise à jour de la jauge  -->
         var gaugePAtemp = new google.visualization.Gauge(document.getElementById("curve_temp"));
         var dataGaugePAtemp = new google.visualization.DataTable();
         dataGaugePAtemp.addColumn("string", "Power");
         dataGaugePAtemp.addColumn("number", "Value");
         dataGaugePAtemp.addRows(1);
-
         // récupération valeur sigma et State -->
-
         function refreshvalue() {
           $.getJSON("/state", function (data) {
             // Récupérer les données du JSON
@@ -262,71 +261,64 @@
             var relais2 = data.relay2;
             var boost = data.boost;
             var boost_endtime = data.boost_endtime;
-
             // Mettre à jour les éléments HTML
-            dataGaugePA.setValue(0, 0, "Power (W)");
+            dataGaugePA.setValue(0, 0, "Watts");
             dataGaugePA.setValue(0, 1, power);
             var pmaxtemp = parseInt((power * 100) / dimmer);
-            let pmax = isNaN(pmaxtemp) ? 1000 : pmaxtemp;
+            let pmax = isNaN(pmaxtemp) ? 1600 : pmaxtemp;
             optionsGauge.max = pmax;
             optionsGauge.redTo = pmax;
-            optionsGauge.redFrom = parseInt(pmax / 2);
-            optionsGauge.yellowTo = parseInt(pmax / 2);
+        optionsGauge.redFrom = parseInt(pmax/1.07);
+        optionsGauge.yellowTo = parseInt(pmax/1.07);
+		optionsGauge.yellowFrom = parseInt(pmax/1.77);
+		optionsGauge.greenTo = parseInt(pmax/1.77);
             gaugePA.draw(dataGaugePA, optionsGauge);
-
-            dataGaugePAtemp.setValue(0, 0, "Temp °C");
+            dataGaugePAtemp.setValue(0, 0, "°C");
             dataGaugePAtemp.setValue(0, 1, temperature);
             gaugePAtemp.draw(dataGaugePAtemp, optionsGaugetemp);
-
             // recupération de l'état de sécurité
-
             // ecriture de "refroidissement" dans le div alerte si l'état est à 1
             if (alerte == 1) {
               document.getElementById("alerte").innerHTML = "Refroidissement";
-              document.getElementById("alerte").style.color = "red";
+              document.getElementById("alerte").style.color = "#FF0000";
             } else {
               document.getElementById("alerte").innerHTML = "Normal";
-              document.getElementById("alerte").style.color = "";
+              document.getElementById("alerte").style.color = "#01DF3A";
             }
-
             // ecriture de "minuteur" dans le div minuteur si l'état est à 1
             if (minuteur == 1) {
-              document.getElementById("minuteur").innerHTML = "Minuteur";
-              document.getElementById("minuteur").style.color = "red";
+              document.getElementById("minuteur").innerHTML = "en marche";
+              document.getElementById("minuteur").style.color = "#01DF3A";
             } else {
-              document.getElementById("minuteur").innerHTML = "Non actif";
-              document.getElementById("minuteur").style.color = "";
+              document.getElementById("minuteur").innerHTML = "à l'arrêt.";
+              document.getElementById("minuteur").style.color = "grey";
             }
-
             // ecriture de "ON" dans le div relais 1 si l'état est à 1
             if (relais1 == 1) {
-              document.getElementById("relais 1").innerHTML = "ON";
-              document.getElementById("relais 1").style.color = "red";
+              document.getElementById("relais 1").innerHTML = "🟠";
+              document.getElementById("relais 1").style.color = "#7ced56";
             } else {
-              document.getElementById("relais 1").innerHTML = "OFF";
-              document.getElementById("relais 1").style.color = "";
+              document.getElementById("relais 1").innerHTML = "🔘";
+              document.getElementById("relais 1").style.color = "#c2c5c1";
             }
-
             // ecriture de "ON" dans le div relais 2 si l'état est à 1
             if (relais2 == 1) {
-              document.getElementById("relais 2").innerHTML = "ON";
-              document.getElementById("relais 2").style.color = "red";
+              document.getElementById("relais 2").innerHTML = "🟠";
+              document.getElementById("relais 2").style.color = "#7ced56";
             } else {
-              document.getElementById("relais 2").innerHTML = "OFF";
-              document.getElementById("relais 2").style.color = "";
+              document.getElementById("relais 2").innerHTML = "🔘";
+              document.getElementById("relais 2").style.color = "#c2c5c1";
             }
-
             // ecriture de "ON" dans le div boost si l'état est à 1
             if (boost == 1) {
-              document.getElementById("boost").innerHTML = "ON";
-              document.getElementById("boost").style.color = "red";
-              document.getElementById("boost_endtime").innerHTML = "Heure de fin: " + boost_endtime ; 
+              document.getElementById("boost").innerHTML = "🟠";
+              document.getElementById("boost").style.color = "#7ced56";
+              document.getElementById("boost_endtime").innerHTML = "Fin à " + boost_endtime ;
             } else {
-              document.getElementById("boost").innerHTML = "OFF";
-              document.getElementById("boost").style.color = "";
+              document.getElementById("boost").innerHTML = "🔘";
+              document.getElementById("boost").style.color = "#c2c5c1";
               document.getElementById("boost_endtime").innerHTML = "" ;
             }
-
             if (data.alerte && data.alerte.trim() != "") {
               const alertContainer = document.getElementById("alertContainer");
               alertContainer.innerHTML = "Alerte : " + data.alerte;
@@ -336,9 +328,7 @@
             }
           });
         }
-
         setInterval(refreshvalue, 5000); // Rafraîchir les données toutes les 5 secondes
-
         document.getElementById("relais 1").addEventListener("click", function () {
           fetch("/get?relay1=2")
             .then((response) => response.text())
@@ -350,7 +340,6 @@
               console.error("Error:", error);
             });
         });
-
         document.getElementById("relais 2").addEventListener("click", function () {
           fetch("/get?relay2=2")
             .then((response) => response.text())
@@ -362,7 +351,6 @@
               console.error("Error:", error);
             });
         });
-      
       document.getElementById("boost").addEventListener("click", function () {
           fetch("/boost")
             .then((response) => response.text())
@@ -375,7 +363,6 @@
             });
         });
       }
-
       function horloge(el) {
         if (typeof el == "string") {
           el = document.getElementById(el);
@@ -390,7 +377,6 @@
         actualiser();
         setInterval(actualiser, 1000);
       }
-
       function refresh_temp() {
         $.getJSON("/state_dallas", function (data) {
           // affichage des dallas et les Température ( boucle sur les dallas )
@@ -424,7 +410,6 @@
           document.getElementById("dallas").innerHTML = dallasHtml;
         });
       }
-
       setInterval(refresh_temp, 5000); // Rafraîchir les données toutes les 5 secondes
     </script>
     </%text>

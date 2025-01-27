@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pv Dimmer %NAME% - Configuration minuteur d'appoint</title>
+    <title>%NAME% - Configuration minuteur d'appoint</title>
     <link href="css/all.min.css?%FS_RELEASE%" rel="stylesheet" type="text/css" />
   </head>
   <body id="page-top">
@@ -22,21 +22,24 @@
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
           </div>
-          <div class="sidebar-brand-text mx-3">Pv Dimmer %NAME%</div>
+          <div class="sidebar-brand-text mx-3">%NAME%</div>
         </a>
         <!-- Divider -->
         <hr class="sidebar-divider my-0" />
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="./">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-            <br />
-            <span id="version">%VERSION%</span><br />
-            <span id="RSSI">RSSI : %RSSI% dBm</span><br />
-            <span id="dimmer_name">%NAME%</span>
-          </a>
-        </li>
+               <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Tableau de bord</span>
+                        <br>
+                        <i class="fas fa-fw fa-code-branch"></i>
+                        <span id="version"> %VERSION%</span>
+                        <br>
+                        <br>
+                        <i class="fa fa-wifi"></i>
+                        <span id="RSSI">Signal WiFi : %RSSI% dBm</span>
+                    </a>
+                </li>
         <!-- Divider -->
         <hr class="sidebar-divider" />
         <!-- Heading -->
@@ -114,9 +117,13 @@
                 ></div>
               </li>
               <!-- Nav Item - Alerts -->
-              <li class="nav-item mx-1">
-                <a id="heure"> </a>
-              </li>
+                            <li class="nav-item dropdown no-arrow">
+
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600">
+                                        <button class="btn btn-primary active col-lg-12" id="heure" >%heure%</button></b>
+                                    </span>
+
+                            </li>
               <div class="topbar-divider d-none d-sm-block"></div>
             </ul>
           </nav>
@@ -139,7 +146,7 @@
                         aria-controls="dimmer"
                         aria-selected="true"
                       >
-                        Configuration dimmer
+                        Paramètres gradateur
                       </button>
                       <button
                         class="nav-link"
@@ -150,7 +157,7 @@
                         aria-controls="relay1"
                         aria-selected="false"
                       >
-                        Configuration relais 1
+                        Paramètres relais 1
                       </button>
                       <button
                         class="nav-link"
@@ -161,7 +168,7 @@
                         aria-controls="relay2"
                         aria-selected="false"
                       >
-                        Configuration relais 2
+                        Paramètres relais 2
                       </button>
                     </div>
                   </nav>
@@ -209,7 +216,7 @@
                       </div>
                       <input
                         type="submit"
-                        value="Application des paramètres dimmer"
+                        value="Application des paramètres gradateur"
                         class="btn btn-primary btn-user btn-block"
                       />
                     </form>
