@@ -39,7 +39,7 @@ struct Programme {
 public:
   char heure_demarrage[6];  // NOSONAR
   char heure_arret[6];  // NOSONAR
-  int temperature=60;
+  int temperature=60;   // Défaut à 50°C / je met à 60 sinon ça bloque à 50 je sais pas pourquoi
   bool run;
   int heure;
   int minute;
@@ -119,7 +119,7 @@ public: bool loadProgramme() {
     strlcpy(heure_arret,                               // <- destination
             doc["heure_arret"] | "00:00",              // <- source
             sizeof(heure_arret));                      // <- destination's capacity
-    temperature = doc["temperature"] | 60;             // defaut à 50 °
+    temperature = doc["temperature"] | 60;             // defaut à 50 ° / je met à 60 sinon ça bloque à 50 je sais pas pourquoi
     seuil_start = doc["seuil_start"] | 0;              // defaut à 0 %°
     seuil_stop = doc["seuil_stop"] | 0;                // defaut à sans arret %
     seuil_temperature = doc["seuil_temperature"] | 0;  // defaut à 0 °
