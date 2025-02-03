@@ -386,11 +386,11 @@ void devices_init(){
   device_dimmer_child_mode.Set_retain_flag(true);
 
   // création des binary_sensor
-  device_dimmer_alarm_temp.Set_name("Surchauffe");
+  device_dimmer_alarm_temp.Set_name("Chauffe");
   device_dimmer_alarm_temp.Set_object_id("alarm_temp");
   device_dimmer_alarm_temp.Set_entity_type("binary_sensor");
   device_dimmer_alarm_temp.Set_entity_category("diagnostic");
-  device_dimmer_alarm_temp.Set_dev_cla("problem");
+  device_dimmer_alarm_temp.Set_dev_cla("heat");
   device_dimmer_alarm_temp.Set_retain_flag(true);
 
   device_cooler.Set_name("Ventilateur");
