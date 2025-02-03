@@ -82,7 +82,9 @@
 #include <Wire.h>  // Only needed for Arduino 1.6.5 and earlier
 #include <ArduinoJson.h> // ArduinoJson v6
 
+#if defined(ESP8266)
 #include <TaskScheduler.h> // gestion des taches
+#endif
 
 // ota mise à jour sans fil
 #include <ElegantOTA.h>
@@ -148,7 +150,8 @@
 
 #include "function/mdns.h"
 
-// taches
+#if defined(ESP8266)
+// taches 
 Task Task_dallas(8123, TASK_FOREVER, &mqttdallas);
 Task Task_Cooler(15456, TASK_FOREVER, &cooler);
 Task Task_GET_POWER(10789, TASK_FOREVER, &get_dimmer_child_power);
@@ -162,7 +165,7 @@ Task Task_OLED(10000, TASK_FOREVER, &oled_task);
 #endif
 
 Scheduler runner;
-
+#endif
 
 /***************************
  * Begin Settings
@@ -289,24 +292,26 @@ IPAddress _ip,_gw,_sn,gatewayIP;   // NOSONAR
 
 void setup() {
   Serial.begin(115200);
-
+  
+  #if defined(ESP8266)
   /// init des tasks 
   runner.init();
   runner.addTask(Task_dallas); // ajout de la tache dallas
- 
+  runner.enableAll();
+  #endif
+
   //Task_dallas.enable();
   #ifdef ESP32
-    runner.addTask(Task_OLED); // ajout de la tache oled
     oled.init();
     oled.wait_for_wifi(0);
   #endif
-  runner.enableAll();
+  
 
   #ifdef ESP32ETH
   ETH.begin(ETH_ADDR, ETH_POWER_PIN, ETH_MDC_PIN, ETH_MDIO_PIN, ETH_TYPE, ETH_CLK_MODE);
   #endif
   logging.Set_log_init("197}11}1");
-
+  logging.alerte_web="RAS";
   // Correction issue full power at start
   pinMode(outputPin, OUTPUT);
   pinMode(zerocross, INPUT);
@@ -634,10 +639,62 @@ void setup() {
   // INIT DE l'oled 
   #ifdef ESP32
   init_ui();  
+
+      xTaskCreate(
+      oled_task,
+      "taskoled",  // Task name
+      6000,            // Stack size (bytes)
+      NULL,             // Parameter
+      3,                // Task priority
+      NULL          // Task handle
+      
+    );  
+
+
+    // création de la task pour le cooler
+    xTaskCreate(
+      cooler_32,
+      "taskcooler_32",  // Task name
+      6000,            // Stack size (bytes)
+      NULL,             // Parameter
+      3,                // Task priority
+      NULL          // Task handle
+    );
+
+    // création de la task pour le get power
+    xTaskCreate(
+      get_dimmer_child_power_32,
+      "taskgetpower_32",  // Task name
+      6000,            // Stack size (bytes)
+      NULL,             // Parameter
+      3,                // Task priority
+      NULL          // Task handle
+    );
+
+    // création de la task pour le ping
+    xTaskCreate(
+      ping_32,
+      "taskping_32",  // Task name
+      6000,            // Stack size (bytes)
+      NULL,             // Parameter
+      3,                // Task priority
+      NULL          // Task handle
+    );
+
+    // création de la task pour la dallas
+    xTaskCreate(
+      mqttdallas_32,
+      "taskdallas_32",  // Task name
+      6000,            // Stack size (bytes)
+      NULL,             // Parameter
+      3,                // Task priority
+      NULL          // Task handle
+    );
+
   #endif
 
 
-
+  #if defined(ESP8266)
   runner.addTask(Task_Cooler);
   Task_Cooler.enable();
 
@@ -646,6 +703,7 @@ void setup() {
 
   runner.addTask(Task_ping);
   Task_ping.enable();
+  #endif
 
   DEBUG_PRINTLN(ESP.getFreeHeap());
 
@@ -682,9 +740,9 @@ void loop() {
   if (!mqttConnected && !AP && mqtt_config.mqtt) {
     connect_and_subscribe();
   }
-
+  #if defined(ESP8266)
   runner.execute(); // gestion des taches
-
+  #endif
   /// limitation de la taille de la chaine de log
   logging.clean_log_init();
 
@@ -718,7 +776,7 @@ void loop() {
         device_dimmer_total_power.send(String(sysvar.puissance_cumul + (sysvar.puissance * config.charge/100)));
       }
       // réinint de la sécurité température
-      sysvar.security = 0;
+      sysvar.security = false;
       // on remet les valeurs de temps programme_marche_force à 00:00
       strcpy(programme_marche_forcee.heure_demarrage, "00:00"); // NOSONAR
       strcpy(programme_marche_forcee.heure_arret, "00:00");  // NOSONAR
@@ -808,10 +866,11 @@ void loop() {
     unified_dimmer.dimmer_off();
   }
 
-  if ( sysvar.security == 1 ) {
+  if ( sysvar.security ) {
     if (!alerte) {
       Serial.println("Alert Temp");
       logging.Set_log_init(Alert_Temp,true);
+      logging.alerte_web=Alert_Temp;
 
       if (!AP && mqtt_config.mqtt ) {
         Mqtt_send_DOMOTICZ(String(config.IDXAlarme), String("Ballon chaud " ),"Alerte");        /// send alert to MQTT
@@ -821,7 +880,8 @@ void loop() {
     }
     //// Trigger de sécurité température
     if ( sysvar.celsius[sysvar.dallas_maitre] <= (config.maxtemp - (config.maxtemp*config.trigger/100)) ) {
-      sysvar.security = 0;
+      sysvar.security = false;
+      logging.alerte_web="RAS";
       if (!AP && mqtt_config.mqtt && config.HA) {
         device_dimmer_alarm_temp.send(stringBool(sysvar.security));
         Mqtt_send_DOMOTICZ(String(config.IDXAlarme), String("RAS" ),"Alerte");
@@ -856,7 +916,7 @@ void loop() {
         sysvar.puissance_cumul = 0;
       }
     }
-    if (sysvar.puissance > config.minpow && sysvar.puissance != 0 && sysvar.security == 0)
+    if (sysvar.puissance > config.minpow && sysvar.puissance != 0 && !sysvar.security)
     {
       DEBUG_PRINTLN(("%d------------------",__LINE__));
       /// si au dessus de la consigne max configurée alors config.maxpow.
@@ -937,7 +997,7 @@ void loop() {
       }
     }
     /// si la sécurité est active on déleste
-    else if ( sysvar.puissance != 0 && sysvar.security == 1)
+    else if ( sysvar.puissance != 0 && sysvar.security )
     {
 
       if ( strcmp(config.child,"") != 0 && strcmp(config.child,"none") != 0  && strcmp(config.mode,"off") != 0) {
@@ -990,8 +1050,9 @@ void loop() {
   //***********************************
   //************* LOOP - Activation de la sécurité --> doublon partiel avec la fonction sécurité ?
   //***********************************
-  if ( sysvar.celsius[sysvar.dallas_maitre] >= config.maxtemp && sysvar.security == 0 ) {
-    sysvar.security = 1;
+  if ( sysvar.celsius[sysvar.dallas_maitre] >= config.maxtemp && !sysvar.security) {
+    sysvar.security = true;
+    logging.alerte_web=Alert_Temp;
     unified_dimmer.set_power(0); // necessaire pour les autres modes
     unified_dimmer.dimmer_off();
     /// pour être sur que la dernière consigne envoyé soit au moins égale au max.temp
