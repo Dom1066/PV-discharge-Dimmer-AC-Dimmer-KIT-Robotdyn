@@ -187,7 +187,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     if (doc2["reset_alarm"].is<int>()) {
         logging.Set_log_init(Clear_alarm_temp,true);
         sysvar.security = false;
-        logging.alerte_web="RAS";
+        logging.alerte_web="";
         device_dimmer_alarm_temp.send(stringBoolMQTT(sysvar.security));
         sysvar.change = 1;
     }

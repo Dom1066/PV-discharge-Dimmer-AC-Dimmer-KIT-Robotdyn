@@ -311,7 +311,7 @@ void setup() {
   ETH.begin(ETH_ADDR, ETH_POWER_PIN, ETH_MDC_PIN, ETH_MDIO_PIN, ETH_TYPE, ETH_CLK_MODE);
   #endif
   logging.Set_log_init("197}11}1");
-  logging.alerte_web="RAS";
+  logging.alerte_web="";
   // Correction issue full power at start
   pinMode(outputPin, OUTPUT);
   pinMode(zerocross, INPUT);
@@ -881,10 +881,10 @@ void loop() {
     //// Trigger de sécurité température
     if ( sysvar.celsius[sysvar.dallas_maitre] <= (config.maxtemp - (config.maxtemp*config.trigger/100)) ) {
       sysvar.security = false;
-      logging.alerte_web="RAS";
+      logging.alerte_web="";
       if (!AP && mqtt_config.mqtt && config.HA) {
         device_dimmer_alarm_temp.send(stringBool(sysvar.security));
-        Mqtt_send_DOMOTICZ(String(config.IDXAlarme), String("RAS" ),"Alerte");
+        Mqtt_send_DOMOTICZ(String(config.IDXAlarme), String("" ),"Alerte");
       }
       sysvar.change = 1;
     }

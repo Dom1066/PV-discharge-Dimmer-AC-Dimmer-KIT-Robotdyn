@@ -236,7 +236,7 @@ bool dallaspresent () {
     return false;
   }
 
-  logging.alerte_web="RAS";
+  logging.alerte_web="";
 
   //// recherche des adresses des sondes
   /// réglage de la préciion des sondes

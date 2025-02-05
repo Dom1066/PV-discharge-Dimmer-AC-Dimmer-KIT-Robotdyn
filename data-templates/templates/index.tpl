@@ -76,6 +76,7 @@
               <p role="alert" id="alertContainer"></p>
             </div>
 
+
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
                             <li class="nav-item dropdown no-arrow">
@@ -278,12 +279,13 @@
             gaugePAtemp.draw(dataGaugePAtemp, optionsGaugetemp);
             // recupération de l'état de sécurité
             // ecriture de "refroidissement" dans le div alerte si l'état est à 1
-            if (alerte == 1) {
-              document.getElementById("alerte").innerHTML = "Refroidissement";
-              document.getElementById("alerte").style.color = "#FF0000";
-            } else {
+            if (alerte == "") {
               document.getElementById("alerte").innerHTML = "Normal";
               document.getElementById("alerte").style.color = "#01DF3A";
+
+            } else {
+              document.getElementById("alerte").innerHTML = "Refroidissement";
+              document.getElementById("alerte").style.color = "#FF0000";
             }
             // ecriture de "minuteur" dans le div minuteur si l'état est à 1
             if (minuteur == 1) {
@@ -319,12 +321,15 @@
               document.getElementById("boost").style.color = "#c2c5c1";
               document.getElementById("boost_endtime").innerHTML = "" ;
             }
-            if (data.alerte && data.alerte.trim() != "") {
+            if (data.alerte && data.alerte.trim() != "")
+            or
+            if (data.alerte && data.alerte.trim() != "Alerte Température")	{
               const alertContainer = document.getElementById("alertContainer");
-              alertContainer.innerHTML = "Alerte : " + data.alerte;
+              alertContainer.innerHTML = "⚠️ " + data.alerte;
               $("#alertBox").fadeIn();
             } else {
-              $("#alertBox").fadeOut();
+              $("#alertBox").fadeOut();		
+
             }
           });
         }
