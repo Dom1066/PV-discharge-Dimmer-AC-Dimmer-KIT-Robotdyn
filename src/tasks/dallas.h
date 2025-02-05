@@ -217,7 +217,7 @@ int devicealerte=0;
 
 bool dallaspresent () {
 
-  /// alerte d'une deection de dallas passée non trouvée
+  /// alerte d'une detection de dallas passée non trouvée
   if (deviceCount == 0 && ( strcmp("null", config.DALLAS) != 0 || strcmp("none", config.DALLAS) != 0 )) {
     /// remonter l'alerte une fois toute les 10 secondes
     if (devicealerte == 0) {
