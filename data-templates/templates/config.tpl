@@ -58,7 +58,7 @@
 ${generate_menu()}
 </%block>
 <%block name="topbar_content">
-            <div class="alert alert-danger" id="alertBox">
+             <div class="alert alert-danger" id="alertBox">
               <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
               <p role="alert" id="alertContainer"></p>
             </div>
@@ -514,13 +514,16 @@ ${generate_content()}
           onoff = onoff ? "ON" : "OFF";
           $("#ONOFF").text(onoff);
 
-          if (data.alerte && data.alerte.trim() != "") {
-            const alertContainer = document.getElementById("alertContainer");
-            alertContainer.innerHTML = "Alerte : " + data.alerte;
-            $("#alertBox").fadeIn();
-          } else {
-            $("#alertBox").fadeOut();
-          }
+            if (data.alerte && data.alerte.trim() != "")
+            or
+            if (data.alerte && data.alerte.trim() != "Alerte Température")	{
+              const alertContainer = document.getElementById("alertContainer");
+              alertContainer.innerHTML = "⚠️ " + data.alerte;
+              $("#alertBox").fadeIn();
+            } else {
+              $("#alertBox").fadeOut();		
+
+            }
         });
       }, 5000);
 
