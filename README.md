@@ -1,3 +1,9 @@
+
+PV dimmer modufs visuelles
+
+[![image-boost.jpg](https://raw.githubusercontent.com/Dom1066/PV-discharge-Dimmer-AC-Dimmer-KIT-Robotdyn/refs/heads/Modifs-visuelles/images/boost.jpg)
+
+
 # Numeric dimmer
 
 The Online Documentation is [HERE](https://pvrouteur.apper-solaire.org)
