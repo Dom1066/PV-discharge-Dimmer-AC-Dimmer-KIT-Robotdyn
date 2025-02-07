@@ -98,7 +98,8 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Puissance gradateur</h6>
+                    <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Puissance photovoltaïque envoyée au cumulus">Puissance gradateur <i class="text-secondary fas fa-info-circle"></i>
+					</div>
                   </div>
                     <div class="card-body d-flex flex-row align-items-center justify-content-center">
                     <div id="curve_chart2" style="width: auto; height: 200px"></div>
@@ -111,9 +112,10 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Température</h6>
+                    <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Température à mi-hauteur du cumulus">Température <i class="text-secondary fas fa-info-circle"></i>
+					</div>
                   </div>
-                  <div class="card-body d-flex flex-row align-items-center justify-content-center">
+                  <div class="card-body d-flex flex-row align-items-center justify-content-center"> 
                     <div id="curve_temp" style="width: auto; height: 200px"></div>
                   </div>
                 </div>
@@ -186,6 +188,9 @@
     <!-- End of Footer -->
     <script type="text/javascript" src="js/all.min.js?%FS_RELEASE%"></script>
     <script type="text/javascript">
+    $('[data-toggle="popover"]').popover();
+
+
       window.onload = function () {
         horloge("time");
       };
