@@ -201,6 +201,16 @@
     <%block name="pagescript">
     <%text>
     <script type="text/javascript">
+    $('[data-toggle="popover"]').popover();
+    $('body').on('click', function (e) {
+    $('[data-toggle=popover]').each(function () {
+        // hide any open popovers when the anywhere else in the body is clicked
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+          }
+      });
+  });
+  
       window.onload = function () {
         horloge("time");
       };
