@@ -108,8 +108,9 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Puissance gradateur</h6>
-                  </div>
+                  <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Puissance photovoltaïque envoyée au cumulus">Puissance gradateur <i class="text-secondary fas fa-info-circle"></i>
+					 </div>				  
+					</div>
                   <div class="card-body">
                     <div id="curve_chart2" style="width: auto; height: 200px"></div>
                   </div>
@@ -121,7 +122,8 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Température</h6>
+                  <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Température à mi-hauteur du cumulus (emplacement de la sonde)">Température <i class="text-secondary fas fa-info-circle"></i>
+					</div>
                   </div>
                   <div class="card-body">
                     <div id="curve_temp" style="width: auto; height: 200px"></div>
@@ -134,7 +136,8 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Etats</h6>
+                  <div class="m-0 font-weight-bold text-primary">Etats & commandes
+					</div>
                   </div>
                   <div class="card-body">
                             <p class=" h6 lh-base text-primary text-nowrap">
@@ -169,7 +172,8 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <h6 class="m-0 font-weight-bold text-primary">Dallas</h6>
+                  <div class="m-0 font-weight-bold text-primary">Infos sondes
+					</div>
                   </div>
                   <div class="card-body">
                     <span id="dallas"></span>
