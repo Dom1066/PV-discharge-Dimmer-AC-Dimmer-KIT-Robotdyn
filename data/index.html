@@ -112,7 +112,7 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                    <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Température à mi-hauteur du cumulus">Température <i class="text-secondary fas fa-info-circle"></i>
+                    <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Température à mi-hauteur du cumulus (emplacement de la sonde)">Température <i class="text-secondary fas fa-info-circle"></i>
 					</div>
                   </div>
                   <div class="card-body d-flex flex-row align-items-center justify-content-center"> 
@@ -189,7 +189,14 @@
     <script type="text/javascript" src="js/all.min.js?%FS_RELEASE%"></script>
     <script type="text/javascript">
     $('[data-toggle="popover"]').popover();
-
+    $('body').on('click', function (e) {
+    $('[data-toggle=popover]').each(function () {
+        // hide any open popovers when the anywhere else in the body is clicked
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+          }
+      });
+  });
 
       window.onload = function () {
         horloge("time");
