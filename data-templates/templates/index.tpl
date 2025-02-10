@@ -108,7 +108,7 @@
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
-                  <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Puissance photovoltaïque envoyée au cumulus">Puissance gradateur <i class="text-secondary fas fa-info-circle"></i>
+                  <div class="m-0 font-weight-bold text-primary" data-toggle="popover" data-placement="bottom" data-content="Puissance photovoltaïque instantanée envoyée au cumulus">Puissance gradateur <i class="text-secondary fas fa-info-circle"></i>
 					 </div>				  
 					</div>
                   <div class="card-body">
@@ -140,6 +140,7 @@
 					</div>
                   </div>
                   <div class="card-body">
+				  
                             <p class=" h6 lh-base text-primary text-nowrap">
                             <b>Statut : <span id="alerte">%alerte%</span></b>
                             </p>
@@ -157,10 +158,9 @@
 
                            <p class="h6 lh-base text-primary text-nowrap">
 						   <b>Relais 2  &emsp;&emsp;&emsp; <span id="relais 2" <button class="btn btn-success" id="relais 2" >N/A </button></b>
-
                             </p>
+							
                     <div>
-
 
                     </div>                    
                   </div>
