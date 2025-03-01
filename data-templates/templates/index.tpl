@@ -148,12 +148,12 @@
                             <p class="h6 lh-base text-primary text-nowrap">							
                             <b>Minuteur d'appoint <span id="minuteur">%minuteur%</span></b>
                             <br>
-                            <p class=" h3 lh-base text-secondary text-nowrap">
+                            <p class="h3 lh-base text-secondary text-nowrap">
                             <b>______________________</b>
                             </p><br>
-							<p class=" h6 lh-base text-primary text-nowrap">
-                           <b>Marche forcée&emsp;  <span id="boost" <button class="btn btn-success btn-lg mx-auto" id="boost" >🔘 </button></b>
-						   <span class=h6 id="boost_endtime"></span>                            
+							<p class="h6 lh-base text-primary text-nowrap">
+                           <b><span id="boost" <button class="btn btn-success btn-lg btn-block" id="boost" > Marche forcée &emsp;🔘</button></b>
+						                              
                             </p>
 							
                     <div>
@@ -308,12 +308,11 @@
 
             // ecriture de "ON" dans le div boost si l'état est à 1
             if (boost == 1) {
-              document.getElementById("boost").innerHTML = "🟠";
-              document.getElementById("boost").style.color = "#7ced56";
+              document.getElementById("boost").innerHTML = "Fin à" + boost_endtime +"&emsp;&emsp;&emsp; 🟠";
+
               document.getElementById("boost_endtime").innerHTML = "Fin à " + boost_endtime ;
             } else {
-              document.getElementById("boost").innerHTML = "🔘";
-              document.getElementById("boost").style.color = "#c2c5c1";
+              document.getElementById("boost").innerHTML = "Marche forcée &emsp; 🔘";
               document.getElementById("boost_endtime").innerHTML = "" ;
             }
             if (data.alerte && data.alerte.trim() != "")
