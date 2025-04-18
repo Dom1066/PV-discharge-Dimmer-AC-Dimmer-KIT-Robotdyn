@@ -45,22 +45,11 @@
         <!-- Heading -->
         <div class="sidebar-heading">Interface</div>
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-          <a class="nav-link" href="./">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Retour Index</span>
-          </a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="config.html">
             <i class="fas fa-fw fa-book"></i>
             <span>Configuration</span>
-          </a>
-        </li>
-        <li class="nav-item" id="menu_mqtt">
-          <a class="nav-link" href="mqtt.html">
-            <i class="fas fa-fw fa-book"></i>
-            <span>Configuration MQTT</span>
           </a>
         </li>
         <li class="nav-item">
@@ -68,19 +57,21 @@
             <i class="fas fa-fw fa-moon"></i>
             <span>Minuteur d'appoint</span>
           </a>
+        </li>		
+        <li class="nav-item" id="menu_mqtt">
+          <a class="nav-link" href="mqtt.html">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Configuration MQTT</span>
+          </a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" href="log.html">
             <i class="fas fa-fw fa-info"></i>
             <span>Console logs</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="backup.html">
-            <i class="fas fa-download"></i>
-            <span>Sauvegardes</span>
-          </a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="update">
             <i class="fas fa-fw fa-download"></i>
@@ -369,7 +360,7 @@
         function restoreOne(request) {
           // Add alert message for this restoration
           var restoreAlert = $(
-            `<div class="alert alert-info" role="alert">⌛ ${request.title} : restoration...</div>`,
+            `<div class="alert alert-info" role="alert">⌛ ${request.title} : restauration...</div>`,
           );
           restoreAlerts.append(restoreAlert);
           // Compute request parameters

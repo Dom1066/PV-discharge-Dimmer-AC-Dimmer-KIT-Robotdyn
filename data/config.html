@@ -46,29 +46,19 @@
         <div class="sidebar-heading">Interface</div>
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link" href="./">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Retour Index</span>
+          <a class="nav-link" href="minuteur.html">
+            <i class="fas fa-fw fa-moon"></i>
+            <span>Minuteur d'appoint</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="config.html">
-            <i class="fas fa-fw fa-book"></i>
-            <span>Configuration</span>
-          </a>
-        </li>
+
         <li class="nav-item" id="menu_mqtt">
           <a class="nav-link" href="mqtt.html">
             <i class="fas fa-fw fa-book"></i>
             <span>Configuration MQTT</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="minuteur.html">
-            <i class="fas fa-fw fa-moon"></i>
-            <span>Minuteur d'appoint</span>
-          </a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="log.html">
             <i class="fas fa-fw fa-info"></i>
@@ -107,10 +97,7 @@
         <div id="content">
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-             <div class="alert alert-danger" id="alertBox">
-              <span class="mr-2 d-none d-lg-inline text-gray-600"></span>
-              <p role="alert" id="alertContainer"></p>
-            </div>
+
             <!-- Sidebar Toggle (Topbar) -->
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -514,14 +501,16 @@
     <!-- End of Footer -->
     <script type="text/javascript" src="js/all.min.js?%FS_RELEASE%"></script>
     <script type="text/javascript">
-      $('[data-toggle="popover"]').popover();
-	  $('body').on('click', function (e) {
-      $('[data-toggle=popover]').each(function () {
+$(function () {
+    $('[data-toggle="popover"]').popover();
+    $('body').on('click', function (e) {
+    $('[data-toggle=popover]').each(function () {
         // hide any open popovers when the anywhere else in the body is clicked
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
             $(this).popover('hide');
           }
       });
+  });
   });
       //<!-- rafraichissement valeurs -->
       setInterval(function refreshsend() {

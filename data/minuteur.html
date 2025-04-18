@@ -45,12 +45,7 @@
         <!-- Heading -->
         <div class="sidebar-heading">Interface</div>
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-          <a class="nav-link" href="./">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Retour Index</span>
-          </a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="config.html">
             <i class="fas fa-fw fa-book"></i>
@@ -63,12 +58,7 @@
             <span>Configuration MQTT</span>
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="minuteur.html">
-            <i class="fas fa-fw fa-moon"></i>
-            <span>Minuteur d'appoint</span>
-          </a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="log.html">
             <i class="fas fa-fw fa-info"></i>
@@ -105,27 +95,21 @@
       <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main content -->
         <div id="content">
-          <!-- Topbar -->
+         <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+
+            <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
-              <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-              <li class="nav-item dropdown no-arrow d-sm-none">
-                <!-- Dropdown - Messages -->
-                <div
-                  class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                  aria-labelledby="searchDropdown"
-                ></div>
-              </li>
-              <!-- Nav Item - Alerts -->
                             <li class="nav-item dropdown no-arrow">
 
                                     <span class="mr-2 d-none d-lg-inline text-gray-600">
-                                        <button class="btn btn-primary active col-lg-12" id="heure" >%heure%</button></b>
+                                        <button class="btn btn-primary active col-lg-12" id="time" >%time%</button></b>
                                     </span>
 
                             </li>
-              <div class="topbar-divider d-none d-sm-block"></div>
             </ul>
+            <div class="topbar-divider d-none d-sm-block"></div>
           </nav>
           <!-- End of Topbar -->
           <!-- Page Content -->
@@ -316,6 +300,9 @@
     <!-- End of Footer -->
     <script type="text/javascript" src="js/all.min.js?%FS_RELEASE%"></script>
     <script type="text/javascript">
+      window.onload = function () {
+        horloge("time");
+      };	
       $(document).ready(function () {
         // Enable tabs
         $("#tabs button").click(function (e) {
@@ -386,14 +373,20 @@
           });
         });
       });
-      setInterval(function () {
-        $.getJSON("/getminuteur", function (data) {
-          // Affichage de l'heure au format 2 digits
-          var heure = data.heure < 10 ? "0" + data.heure : data.heure;
-          var minute = data.minute < 10 ? "0" + data.minute : data.minute;
-          $("#heure").html(heure + ":" + minute);
-        });
-      }, 15000);
+
+	  
+function horloge(el) {
+  if(typeof el=="string") { el = document.getElementById(el); }
+  function actualiser() {
+    var date = new Date();
+    var str = date.getHours();
+    str += ':'+(date.getMinutes()<10?'0':'')+date.getMinutes();
+    str += ':'+(date.getSeconds()<10?'0':'')+date.getSeconds();
+    el.innerHTML = str;
+  }
+  actualiser();
+  setInterval(actualiser,1000);
+}	  
     </script>
   </body>
 </html>

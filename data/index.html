@@ -39,12 +39,21 @@
                         <span id="RSSI">Signal WiFi : %RSSI% dBm</span>
                     </a>
                 </li>
-        <!-- Divider -->
-        <hr class="sidebar-divider" />
-        <!-- Heading -->
+     <!-- Divider -->
+      <hr class="sidebar-divider">				
+
+
+<div id="id6c1d10f500890" a='{"t":"r","v":"1.2","lang":"fr","locs":[37],"ssot":"c","sics":"ds","cbkg":"#FFFFFF00","cfnt":"rgba(255,255,255,1)","codd":"#FFFFFF00","cont":"rgba(78,251,237,0.8313725490196079)","eln":"bool","stof":"5"}'>Source des données météo: <a href="https://meteolabs.fr/meteo_strasbourg/demain/">https://meteolabs.fr/meteo_strasbourg/demain/</a></div><script async src="https://static1.meteolabs.fr/widgetjs/?id=id6c1d10f500890"> setInterval(refreshvalue, 50000);</script>
+        
+  <!-- Divider -->
+      <hr class="sidebar-divider">
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
         <div class="sidebar-heading">Interface</div>
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="config.html">
             <i class="fas fa-fw fa-cog"></i>
             <span>Configuration</span>
@@ -126,20 +135,26 @@
 					</div>
                   </div>
                   <div class="card-body">
-		
-                            <p class=" h6 lh-base text-primary text-nowrap">
-                            <b>Statut : <span id="alerte">N/A</span></b>
+							<p class="h6 lh-base text-primary text-nowrap">
+                           <b><pre><span href="#" id="ONOFF" <button class="btn btn-info btn-block"  id="ONOFF" href="#" >ON/OFF      🔘</button></pre></b>
+						                              
                             </p>
 							
-<br>							
+                            <p class=" h6 lh-base text-primary text-nowrap">
+                            <b>Statut : <span id="alerte">N/A</span></b>
+                            <br><br>							
+                            </p>
+							
+							
                             <p class="h6 lh-base text-primary text-nowrap">							
-                            <b>Minuteur d'appoint <span id="minuteur">%minuteur%</span></b>
-                            <br>
-                            <p class="h3 lh-base text-secondary text-nowrap">
-                            <b>&emsp;</b>
-                            </p><br>
+                            <b>Minuteur nuit <span id="minuteur">%minuteur%</span></b>
+	                        <br><br>						
+						
+                            </p>							
+
+
 							<p class="h6 lh-base text-primary text-nowrap">
-                           <b><span id="boost" <button class="btn btn-success btn-lg btn-block" id="boost" > Marche forcée &emsp;🔘</button></b>
+                           <b><span id="boost" <button class="btn btn-info btn-block" id="boost" > Marche forcée &emsp;🔘</button></b>
 						                              
                             </p>
 					
@@ -182,6 +197,7 @@
     <!-- End of Footer -->
     <script type="text/javascript" src="js/all.min.js?%FS_RELEASE%"></script>
     <script type="text/javascript">
+$(function () {
     $('[data-toggle="popover"]').popover();
     $('body').on('click', function (e) {
     $('[data-toggle=popover]').each(function () {
@@ -190,6 +206,7 @@
             $(this).popover('hide');
           }
       });
+  });
   });
 
       window.onload = function () {
@@ -253,6 +270,10 @@
             var relais2 = data.relay2;
             var boost = data.boost;
             var boost_endtime = data.boost_endtime;
+			var onoff = data.onoff;
+            onoff = onoff ? "ON/OFF        🟠" : "ON/OFF        🔘";
+			 $("#ONOFF").text(onoff);
+			
             // Mettre à jour les éléments HTML
             dataGaugePA.setValue(0, 0, "Watts");
             dataGaugePA.setValue(0, 1, power);
@@ -286,12 +307,14 @@
               document.getElementById("minuteur").innerHTML = "à l'arrêt.";
               document.getElementById("minuteur").style.color = "grey";
             }
+			
+	
 
             // ecriture de "ON" dans le div boost si l'état est à 1
             if (boost == 1) {
               document.getElementById("boost").innerHTML = "Fin à  " + boost_endtime +"&emsp;&emsp;&emsp; 🟠";
 
-              document.getElementById("boost_endtime").innerHTML = "Fin à " + boost_endtime ;
+
             } else {
               document.getElementById("boost").innerHTML = "Marche forcée &emsp; 🔘";
 
@@ -322,6 +345,18 @@
               console.error("Error:", error);
             });
         });
+		
+       $("#ONOFF").click(function () {
+        $.get("/onoff").done(function (data) {
+          // si la data est 1 alors on affiche ON sinon OFF
+          if (data == 1) {
+            data = "ON/OFF        🟠";
+          } else {
+            data = "ON/OFF        🔘";
+          }
+          $("#ONOFF").text(data);
+        });
+      });
       }
       function horloge(el) {
         if (typeof el == "string") {
