@@ -82,7 +82,6 @@ bool checkAuth(AsyncWebServerRequest *request);
 
 extern Logs Logging;
 extern String devAddrNames[MAX_DALLAS];
-extern bool otaRequested;
 
 #ifdef SSR_ZC
 extern SSR_BURST ssr_burst;
@@ -313,35 +312,11 @@ void call_pages() {
     server.serveStatic(file[0], LittleFS, file[0]);
   }
 
-  // ajout de la commande de boost 2h   
+  // ajout de la commande de boost 1h   
   server.on("/boost", HTTP_ANY, [] (AsyncWebServerRequest *request) {
     boost();    
     request->send(200, "application/json",  getMinuteur(programme_marche_forcee));
   });
-
-/// service OTA pour vérifier la version du firmware
-    server.on("/otacheck", HTTP_GET, [](AsyncWebServerRequest *request) {
-      HTTPClient http;
-      #ifdef ARDUINO_ARCH_ESP8266
-        WiFiClient client;
-        http.begin(client, OTA_JSON);
-      #else
-        http.begin(OTA_JSON);
-      #endif
-
-      int code = http.GET();
-      if (code == 200) {
-        request->send(200, "application/json", http.getString());
-      } else {
-        request->send(502, "application/json", "{\"error\":\"upstream failed\"}");
-      }
-      http.end();
-    });
-
-    server.on("/otaupdate", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(200, "application/json", "{\"status\":\"Update started\"}");
-         otaRequested = true;
-    });
 
   server.on("/getminuteur", HTTP_ANY, [] (AsyncWebServerRequest *request) {
     if (request->hasParam("dimmer")) { request->send(200, "application/json",  getMinuteur(programme)); }
@@ -721,7 +696,6 @@ String getState() {
   doc["power"] = int(instant_power * config.charge/100);
   doc["Ptotal"]  = sysvar.puissance_cumul + int(instant_power * config.charge/100);
   doc["RSSI"] = WiFi.RSSI();
-  doc["version"] = String(VERSION);
   #ifdef RELAY1
   doc["relay1"]   = !digitalRead(RELAY1);
   doc["relay2"]   = digitalRead(RELAY2);
@@ -741,8 +715,8 @@ String getState() {
   doc["minuteur"] = programme.run;
   doc["onoff"] = config.dimmer_on_off;
   doc["alerte"] = logging.alerte_web; //affiche maintenant l'alerte et plus 0 ou 1 pour les alertes
-if (programme_marche_forcee.run) {
   doc["boost"] = programme_marche_forcee.run;
+  if (programme_marche_forcee.run) {
   doc["boost_endtime"] = programme_marche_forcee.heure_arret; 
   } 
   doc["boost_max_temp"] = programme_marche_forcee.temperature;
