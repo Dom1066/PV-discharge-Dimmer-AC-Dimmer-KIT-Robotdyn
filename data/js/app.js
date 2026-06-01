@@ -182,6 +182,20 @@ const App = {
       el.setAttribute('stroke', color);
     }
   },
+  
+  setGauge1(id, value, max, colorStops) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const arcLength = Math.PI * 60;
+    const pct = Math.min(value / max, 1);
+    el.style.strokeDashoffset = arcLength * (1 - pct);
+
+    // Color based on percentage
+    if (colorStops) {
+      const color = pct < 0.31 ? colorStops[0] : pct < 0.42 ? colorStops[1] : pct < 0.60 ? colorStops[2] : colorStops[3];
+      el.setAttribute('stroke', color);
+    }
+  },
 
   async refreshDashboard() {
     try {
@@ -200,28 +214,29 @@ const App = {
     const power = parseFloat(d.power) || 0;
     const temp = parseFloat(d.temperature) || 0;
     const dimmer = parseFloat(d.dimmer) || 100;
+    const alerteActive = typeof d.alerte === 'string' && d.alerte.trim() !== '' && d.alerte !== 'RAS';	
 
     // Update gauges
-    const maxPower = Math.max(dimmer, power, 100);
-    this.setGauge('gaugePower', power, maxPower, ['var(--success)', 'var(--warning)', 'var(--danger)']);
+    const maxPower = Math.max(dimmer, power, 1680);
+    this.setGauge('gaugePower', power, maxPower, ['var(--success)', 'var(--success)', 'var(--warning)']);
     const valEl = document.getElementById('gaugePowerVal');
     if (valEl) valEl.textContent = Math.round(power);
-    const lblEl = document.getElementById('gaugePowerLabel');
-    if (lblEl) lblEl.textContent = Math.round(power) + ' W';
 
-    this.setGauge('gaugeTemp', temp, 100, ['var(--info)', 'var(--warning)', 'var(--danger)']);
+
+
+    // Temp: 0 to 90
+    this.setGauge1('gaugeTemp', temp, 90, ['var(--primary)', 'var(--success)', 'var(--warning)', 'var(--danger)']);
     const tempEl = document.getElementById('gaugeTempVal');
     if (tempEl) tempEl.textContent = Math.round(temp);
 
     // States
-    this.setState('st-alerte', d.alerte === 1 || d.alerte === '1' || d.alerte === true,
-      this.t('state.cooling'), this.t('state.normal'), 'danger', 'on');
+    this.setState('st-alerte', alerteActive, 'Refroidissement', 'Normal', 'danger', 'on');
     this.setState('st-minuteur', d.minuteur === 1 || d.minuteur === '1' || d.minuteur === true,
-      this.t('state.active'), this.t('state.inactive'), 'warn', 'off');
+      'en marche', 'à l\'arrêt', 'warn', 'off');
     this.setState('st-relay1', d.relay1 === 1 || d.relay1 === '1' || d.relay1 === true,
-      this.t('state.on'), this.t('state.off'), 'on', 'off');
+      'ON', 'OFF', 'on', 'off');
     this.setState('st-relay2', d.relay2 === 1 || d.relay2 === '1' || d.relay2 === true,
-      this.t('state.on'), this.t('state.off'), 'on', 'off');
+      'ON', 'OFF', 'on', 'off');
 
     const boostActive = d.boost === 1 || d.boost === '1' || d.boost === true;
     this.setState('st-boost', boostActive, this.t('state.on'), this.t('state.off'), 'on', 'off');
@@ -902,6 +917,7 @@ const App = {
       this.appendLog(log, this.t('backup.select_file'), 'warn');
       return;
     }
+
     let data;
     try {
       data = JSON.parse(await input.files[0].text());
@@ -976,6 +992,7 @@ const App = {
     const titleGen = this.t('backup.req.general');
     const titleMqtt = this.t('backup.req.mqtt');
 
+    // Config generale
     if (data.general) {
       this.appendLog(log, this.t('backup.loading', { title: titleGen }), 'info');
       const params = new URLSearchParams();
@@ -988,6 +1005,7 @@ const App = {
       this.appendLog(log, this.t('backup.absent', { title: titleGen }), 'warn');
     }
 
+    // Config MQTT (sans le toggle servermode, avec remap)
     if (data.mqtt) {
       this.appendLog(log, this.t('backup.loading', { title: titleMqtt }), 'info');
       const params = new URLSearchParams();
@@ -1003,6 +1021,7 @@ const App = {
       this.appendLog(log, this.t('backup.absent', { title: titleMqtt }), 'warn');
     }
 
+    // Toggle servermode (bascule si l'etat differe)
     for (const key of mqttToggles) {
       if (!data.mqtt) continue;
       const target = data.mqtt[key];
@@ -1015,6 +1034,7 @@ const App = {
       } catch (e) { this.appendLog(log, this.t('backup.fail', { title: key }), 'danger'); }
     }
 
+    // Minuteurs
     const timers = [
       ['dimmer_timer', 'dimmer', this.t('backup.req.timer_dimmer')],
       ['relay1_timer', 'relay1', this.t('backup.req.timer_relay1')],

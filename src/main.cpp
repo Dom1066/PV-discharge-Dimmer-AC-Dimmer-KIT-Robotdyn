@@ -103,7 +103,6 @@
 #include "function/littlefs.h"
 #include "function/mqtt.h"
 #include "function/minuteur.h"
-#include "function/ota.h"
 
 #ifdef ROBOTDYN
   #include "function/dimmer.h"
@@ -192,9 +191,6 @@ DNSServer dns;
 HTTPClient http;
 bool shouldSaveConfig = false;
 Wifi_struct wifi_config_fixe;
-
-/// ota 
-bool otaRequested = false;
 
 
 //***********************************
@@ -757,12 +753,6 @@ void loop() {
    // oled_task();
   #endif
   
-  // ota 
-  if (otaRequested) {
-      otaRequested = false;
-      checkForUpdate();  // bloquant, reboot à la fin si succès
-  }
-
   /// connexion MQTT dans les cas de conf mqtt et perte de connexion
   if (!client.connected() ) {
     mqttConnected = false;
@@ -791,7 +781,7 @@ void loop() {
         Serial.println("Température minimale atteinte, préchauffage activé");
         logging.Set_log_init("Préchauffage activé \n", true);
         config.preheat = true;
-
+      if ( config.HA ) {  device_dimmer_preheat.send(stringBool(true));  }
     }
   }
   else if ( config.preheat ) //&& sysvar.celsius[sysvar.dallas_maitre] > config.mintemp déplacé dans le test amont 
@@ -799,6 +789,7 @@ void loop() {
       unified_dimmer.set_power(0);
       Serial.println("Fin préchauffage, dimmer arrêté");
       logging.Set_log_init("Fin préchauffage, dimmer arrêté \n", true);
+      if ( config.HA ) {  device_dimmer_preheat.send(stringBool(false));  }	  
     }
 
 
@@ -807,7 +798,7 @@ void loop() {
   //// Dimmer
   if (programme.run || programme_marche_forcee.run) {
     //  minuteur en cours
-  if ( (programme.run && programme.stop_progr()) || (programme_marche_forcee.run && programme_marche_forcee.stop_progr()) ) {   //Le principe : on n'appelle stop_progr() d'un programme que si c'est lui qui est actif, évitant ainsi que le minuteur principal — avec son propre seuil de température — ne coupe le boost à sa place.Merci Claude.
+  if ( (programme.run && programme.stop_progr()) || (programme_marche_forcee.run && programme_marche_forcee.stop_progr()) ) {
       // Robotdyn dimmer
       logging.Set_log_init(Stop_minuteur,true);
       unified_dimmer.set_power(0);       // necessaire pour les autres modes

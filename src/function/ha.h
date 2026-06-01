@@ -279,6 +279,7 @@ HA device_dimmer_child_mode;
 /// création binary_sensor
 HA device_dimmer_alarm_temp;
 HA device_cooler;
+HA device_dimmer_preheat;
 HA device_dimmer_alarm_temp_clear;
 
 // creation remonté de puissance
@@ -426,6 +427,13 @@ void devices_init(){
   device_dimmer_alarm_temp.Set_entity_category("diagnostic");
   device_dimmer_alarm_temp.Set_dev_cla("problem");
   device_dimmer_alarm_temp.Set_retain_flag(true);
+  
+  device_dimmer_preheat.Set_name("Préchauffe");
+  device_dimmer_preheat.Set_object_id("preheat");
+  device_dimmer_preheat.Set_entity_type("binary_sensor");
+  device_dimmer_preheat.Set_entity_category("diagnostic");
+  device_dimmer_preheat.Set_dev_cla("running");
+  device_dimmer_preheat.Set_retain_flag(true);  
 
   device_cooler.Set_name("Ventilateur");
   device_cooler.Set_object_id("cooler");
@@ -485,6 +493,10 @@ void HA_discover(){
     // boost
     device_dimmer_boost.HA_discovery();
     //device_dimmer_boost.send("0");
+	
+    // preheat
+    device_dimmer_preheat.HA_discovery();	
+	
 
     device_dimmer_starting_pow.HA_discovery();
     device_dimmer_starting_pow.sendInt(config.startingpow);

@@ -189,6 +189,7 @@ public:
     charge3 = doc["charge3"] | 0;
     trigger = doc["trigger"] | 10;
     mintemp = doc["mintemp"] | 0;
+    preheat = doc["preheat"] | false;		
     auth_enabled = doc["auth_enabled"] | false;
     auth_pass = doc["auth_pass"] | "";
     check_trigger();

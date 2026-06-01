@@ -166,7 +166,7 @@ public: bool loadProgramme() {
     }
 
     /// test de la sécurité avant relance
-    if (security && ( sysvar.celsius[sysvar.dallas_maitre]> float(temperature*0.95) ) )  { return false; }
+    if (security && ( sysvar.celsius[sysvar.dallas_maitre]> float( config.maxtemp - (config.maxtemp*config.trigger/100) ) ) )  { return false; }
     security = false;
 
     int heures;
