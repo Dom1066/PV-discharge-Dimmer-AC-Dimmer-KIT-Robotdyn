@@ -166,7 +166,7 @@ public: bool loadProgramme() {
     }
 
     /// test de la sécurité avant relance
-    if (security && ( sysvar.celsius[sysvar.dallas_maitre]> float(temperature*0.95) ) )  { return false; }
+    if (security && ( sysvar.celsius[sysvar.dallas_maitre]> float(temperature*0.95) ) )  { return false; }  // revert  car automation HA max temp la nuit et yoyo en fin de chauffe si je prend en compte le trigger sur la puissance modifiée la nuit.
 
     security = false;
 
